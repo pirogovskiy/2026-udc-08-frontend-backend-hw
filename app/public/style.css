@@ -2,6 +2,7 @@
 body {
   font: 15px/1.5 system-ui, sans-serif;
   max-width: 680px; margin: 2rem auto; padding: 0 1rem;
+  background: Canvas; color: CanvasText;
 }
 header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 h1 { font-size: 1.4rem; margin: 0; }

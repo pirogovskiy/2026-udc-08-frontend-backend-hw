@@ -18,19 +18,21 @@
       </label>
     </header>
 
-    <form id="new-note">
-      <input id="title" placeholder="Заголовок" required />
-      <input id="body" placeholder="Текст" />
-      <button type="submit">Додати</button>
-    </form>
+    <main>
+      <form id="new-note">
+        <input id="title" placeholder="Заголовок" required />
+        <input id="body" placeholder="Текст" />
+        <button type="submit">Додати</button>
+      </form>
 
-    <div class="filters" role="group" aria-label="Перегляд нотаток">
-      <button type="button" id="filter-active" class="filter-btn" aria-pressed="true">Активні</button>
-      <button type="button" id="filter-archived" class="filter-btn" aria-pressed="false">Архів</button>
-    </div>
+      <div class="filters" role="group" aria-label="Перегляд нотаток">
+        <button type="button" id="filter-active" class="filter-btn" aria-pressed="true">Активні</button>
+        <button type="button" id="filter-archived" class="filter-btn" aria-pressed="false">Архів</button>
+      </div>
 
-    <ul id="notes"></ul>
-    <p id="empty" hidden></p>
+      <ul id="notes"></ul>
+      <p id="empty" hidden></p>
+    </main>
 
     <script type="module" src="./app.js"></script>
   </body>
