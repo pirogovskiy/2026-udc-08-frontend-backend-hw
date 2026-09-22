@@ -60,6 +60,48 @@ describe("GET /api/notes/:id", () => {
   });
 });
 
+describe("PATCH /api/notes/:id/archive", () => {
+  it("archives the caller's own note", async () => {
+    const res = await asOlya(request(app).patch("/api/notes/1/archive"))
+      .send({ archived: true })
+      .expect(200);
+    expect(res.body.archived).toBe(true);
+
+    const list = await asOlya(request(app).get("/api/notes")).expect(200);
+    expect(list.body.find((n) => n.id === 1).archived).toBe(true);
+  });
+
+  it("unarchives it back", async () => {
+    await asOlya(request(app).patch("/api/notes/1/archive")).send({ archived: true }).expect(200);
+    const res = await asOlya(request(app).patch("/api/notes/1/archive"))
+      .send({ archived: false })
+      .expect(200);
+    expect(res.body.archived).toBe(false);
+  });
+
+  it("rejects a non-boolean archived value", async () => {
+    await asOlya(request(app).patch("/api/notes/1/archive"))
+      .send({ archived: "yes" })
+      .expect(400);
+  });
+
+  it("does not leak the owner's user_id in the response", async () => {
+    const res = await asOlya(request(app).patch("/api/notes/1/archive"))
+      .send({ archived: true })
+      .expect(200);
+    expect(res.body).not.toHaveProperty("user_id");
+  });
+
+  it("will not archive someone else's note", async () => {
+    await asOlya(request(app).patch("/api/notes/3/archive"))
+      .send({ archived: true })
+      .expect(404);
+
+    const taras = await asTaras(request(app).get("/api/notes")).expect(200);
+    expect(taras.body.find((n) => n.id === 3).archived).toBe(false);
+  });
+});
+
 describe("DELETE /api/notes/:id", () => {
   it("deletes the caller's own note", async () => {
     await asOlya(request(app).delete("/api/notes/1")).expect(204);
