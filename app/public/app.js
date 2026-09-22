@@ -27,13 +27,21 @@ function setFilter(next) {
 }
 
 function toggleArchive(note) {
-  note.archived = !note.archived;
+  const previous = note.archived;
+  note.archived = !previous;
   render();
   fetch(`/api/notes/${note.id}/archive`, {
     method: "PATCH",
     headers: headers(),
     body: JSON.stringify({ archived: note.archived }),
-  }).catch(() => {});
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error(`archive request failed: ${res.status}`);
+    })
+    .catch(() => {
+      note.archived = previous;
+      render();
+    });
 }
 
 function render() {
@@ -83,10 +91,15 @@ function render() {
 }
 
 async function load() {
-  const res = await fetch("/api/notes", { headers: headers() });
-  const fresh = await res.json();
-  notes = fresh.map((n) => ({ ...n, archived: Boolean(n.archived) }));
-  render();
+  try {
+    const res = await fetch("/api/notes", { headers: headers() });
+    if (!res.ok) return;
+    const fresh = await res.json();
+    notes = fresh.map((n) => ({ ...n, archived: Boolean(n.archived) }));
+    render();
+  } catch {
+    // Network error: leave the previously loaded list on screen.
+  }
 }
 
 form.addEventListener("submit", async (e) => {

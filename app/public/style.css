@@ -6,7 +6,9 @@ body {
 }
 header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
 h1 { font-size: 1.4rem; margin: 0; }
-form { display: flex; gap: .5rem; margin: 1.2rem 0; }
+form { display: flex; gap: .5rem; margin: 1.2rem 0; align-items: flex-end; }
+.field { display: flex; flex-direction: column; flex: 1; gap: .2rem; }
+.field label { font-size: .8rem; opacity: .75; }
 input { flex: 1; padding: .5rem; border: 1px solid #8884; border-radius: 6px; font: inherit; }
 button {
   padding: .5rem .9rem; min-height: 2.5rem; border: 1px solid #8884; border-radius: 6px;

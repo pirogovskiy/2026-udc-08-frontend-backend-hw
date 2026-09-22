@@ -20,8 +20,14 @@
 
     <main>
       <form id="new-note">
-        <input id="title" placeholder="Заголовок" required />
-        <input id="body" placeholder="Текст" />
+        <div class="field">
+          <label for="title">Заголовок</label>
+          <input id="title" placeholder="Заголовок" required />
+        </div>
+        <div class="field">
+          <label for="body">Текст</label>
+          <input id="body" placeholder="Текст" />
+        </div>
         <button type="submit">Додати</button>
       </form>
 
