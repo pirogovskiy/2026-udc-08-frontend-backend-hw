@@ -58,6 +58,10 @@ describe("GET /api/notes/:id", () => {
   it("404s for a note that does not exist", async () => {
     await asOlya(request(app).get("/api/notes/999")).expect(404);
   });
+
+  it("will not read someone else's note", async () => {
+    await asOlya(request(app).get("/api/notes/3")).expect(404);
+  });
 });
 
 describe("PATCH /api/notes/:id/archive", () => {

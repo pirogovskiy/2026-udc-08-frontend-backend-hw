@@ -38,13 +38,15 @@ export function createApp(db) {
     res.json(rows.map((n) => ({ ...n, archived: Boolean(n.archived) })));
   });
 
-  // Read one note.
+  // Read one of the caller's own notes.
   app.get("/api/notes/:id", (req, res) => {
     const note = db
-      .prepare("SELECT id, user_id, title, body, created_at FROM notes WHERE id = ?")
-      .get(Number(req.params.id));
+      .prepare(
+        "SELECT id, title, body, archived, created_at FROM notes WHERE id = ? AND user_id = ?",
+      )
+      .get(Number(req.params.id), req.userId);
     if (!note) return res.status(404).json({ error: "not found" });
-    res.json(note);
+    res.json({ ...note, archived: Boolean(note.archived) });
   });
 
   // Create a note for the caller.
